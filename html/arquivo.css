@@ -1,0 +1,160 @@
+:root {
+    --bg-app: #1e1e1e;
+    --bg-panel: #252526;
+    --border: #3e3e42;
+    --text-main: #d4d4d4;
+    --text-muted: #858585;
+    --accent: #0e639c; /* VS Code Blue */
+    --accent-hover: #1177bb;
+    --danger: #c586c0;
+    --success: #4ec9b0;
+    --font-code: 'Consolas', 'Courier New', monospace;
+    --font-ui: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* { box-sizing: border-box; scrollbar-width: thin; scrollbar-color: #424242 #1e1e1e; }
+
+body {
+    margin: 0; padding: 10px;
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    font-family: var(--font-ui);
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* GRID LAYOUT */
+.app-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas principais */
+    grid-template-rows: 60% 40%;    /* Duas linhas: Cima (Prog/Mem) e Baixo (Proc/Ctrl) */
+    gap: 10px;
+    height: 100%;
+}
+
+/* PAINÉIS (JANELAS) */
+.panel {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.panel-header {
+    background-color: #333333;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-body {
+    flex: 1;
+    padding: 10px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* --- PAINEL 1: PROGRAMA (Assembly + Compilado) --- */
+.code-container {
+    display: flex;
+    flex: 1;
+    gap: 1px;
+    background-color: var(--border); /* Linha divisória */
+}
+.code-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-panel);
+}
+.code-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    padding: 4px 8px;
+    background: #2d2d2d;
+}
+textarea, .read-only-code {
+    flex: 1;
+    background-color: #1e1e1e;
+    color: #dcdcdc;
+    border: none;
+    padding: 10px;
+    font-family: var(--font-code);
+    font-size: 14px;
+    resize: none;
+    outline: none;
+    white-space: pre;
+    overflow-y: auto;
+}
+.read-only-code { color: #4ec9b0; }
+
+/* --- PAINEL 2: MEMÓRIA --- */
+table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: var(--font-code); }
+th { text-align: left; background: #2d2d2d; padding: 6px; color: var(--text-muted); position: sticky; top: 0; }
+td { padding: 4px 6px; border-bottom: 1px solid #333; color: #ce9178; }
+tr:hover { background-color: #2a2d2e; }
+
+.highlight-pc { background-color: #264f78 !important; color: white !important; } /* Azul VSCode */
+.highlight-sp { border-left: 3px solid #c586c0; } /* Roxo */
+
+/* --- PAINEL 3: PROCESSADOR (Registradores + Histórico) --- */
+.proc-layout { display: flex; gap: 10px; height: 100%; }
+
+.regs-container { flex: 0 0 200px; overflow-y: auto; border-right: 1px solid var(--border); padding-right: 10px; }
+.reg-row {
+    display: flex; justify-content: space-between;
+    padding: 4px 8px;
+    border-bottom: 1px solid #333;
+    font-family: var(--font-code);
+    font-size: 13px;
+}
+.reg-name { color: #569cd6; font-weight: bold; }
+.reg-val { color: #b5cea8; }
+.reg-changed { animation: flash 1s; background-color: #3a3d41; }
+
+.history-container { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
+.history-log {
+    font-family: var(--font-code);
+    font-size: 12px;
+    color: #808080;
+    padding: 2px 0;
+    border-bottom: 1px solid #2a2a2a;
+}
+.history-last { color: #dcdcdc; font-weight: bold; background: #2a2d2e; padding: 5px; }
+
+/* --- PAINEL 4: CONTROLES --- */
+.controls-wrapper {
+    display: flex; flex-direction: column; gap: 15px; justify-content: center; height: 100%; padding: 20px;
+}
+.btn-group { display: flex; gap: 10px; }
+button {
+    padding: 15px; flex: 1;
+    background: #3c3c3c; color: white;
+    border: 1px solid #555; border-radius: 4px;
+    cursor: pointer; font-weight: bold;
+}
+button:hover:not(:disabled) { background: #505050; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-main { background: var(--accent); border: none; }
+.btn-main:hover:not(:disabled) { background: var(--accent-hover); }
+
+.status-bar {
+    margin-top: auto; padding: 5px;
+    font-size: 12px; color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+}
+
+/* Animação */
+@keyframes flash { 0% { background-color: #c586c0; color: white; } 100% { background-color: transparent; } }

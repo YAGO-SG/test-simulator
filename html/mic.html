@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador MIC-1 Profissional</title>
+    <link rel="stylesheet" href="arquivo.css">
+</head>
+<body>
+
+<div class="app-grid">
+    
+    <!-- 1. PROGRAMA (Topo Esquerda) -->
+    <div class="panel">
+        <div class="panel-header">Programa</div>
+        <div class="code-container">
+
+            <!-- Entrada Assembly -->
+            <div class="code-box">
+                <div class="code-label">ASSEMBLY (MAC-1)</div>
+                <textarea id="editor" spellcheck="false">
+                    LODD 10
+                    ADDD 11
+                    STOD 12
+                    JUMP 0
+                </textarea>
+            </div>
+            
+            <!-- Saída Compilada -->
+            <div class="code-box">
+                <div class="code-label">COMPILADO (MEMÓRIA)</div>
+                <div id="compiled-view" class="read-only-code"></div>
+            </div>
+        </div>
+        <div class="status-bar">
+            <span id="status-msg">Pronto.</span>
+        </div>
+    </div>
+
+    <!-- 2. MEMÓRIA PRINCIPAL (Topo Direita) -->
+    <div class="panel">
+        <div class="panel-header">Memória Principal</div>
+        <div class="panel-body" style="padding: 0;">
+            <table id="mem-table">
+                <thead>
+                    <tr>
+                        <th>Endereço</th>
+                        <th>Binário (16-bit)</th>
+                        <th>Hex</th>
+                        <th>Dec</th>
+                        <th>Label</th>
+                    </tr>
+                </thead>
+                <tbody id="mem-body">
+                    <!-- Preenchido via JS -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 3. PROCESSADOR (Baixo Esquerda) -->
+    <div class="panel">
+        <div class="panel-header">
+            <span>Processador (MIC-1)</span>
+            <span style="font-size: 11px; color: #aaa;">MPC: <span id="val-mpc" style="color: white;">0</span></span>
+        </div>
+        <div class="panel-body">
+            <div class="proc-layout">
+                <!-- Lista de Registradores -->
+                <div class="regs-container" id="regs-list">
+                    <!-- Preenchido via JS (PC, AC, SP...) -->
+                </div>
+
+                <!-- Histórico de Microinstruções -->
+                <div class="history-container">
+                    <div style="font-size: 11px; color: #aaa; margin-bottom: 5px;">HISTÓRICO DE MICROINSTRUÇÕES</div>
+                    <div id="micro-history-log" style="flex:1; overflow-y:auto; display:flex; flex-direction:column-reverse;">
+                        <!-- Logs entram aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. CONTROLES DA SIMULAÇÃO (Baixo Direita) -->
+    <div class="panel">
+        <div class="panel-header">Controles da Simulação</div>
+        <div class="panel-body">
+            <div class="controls-wrapper">
+                <button class="btn-main" onclick="App.assemble()">1. MONTAR (ASSEMBLE)</button>
+                
+                <div class="btn-group">
+                    <button id="btnStep" onclick="App.step()" disabled>PASSO (STEP)</button>
+                    <button id="btnRun" onclick="App.toggleRun()" disabled>AUTO RUN</button>
+                </div>
+
+                <button onclick="App.reset()" style="background: #802626;">RESET TOTAL</button>
+                
+                <div style="display: flex; align-items: center; gap: 10px; color: #888; font-size: 12px;">
+                    <span>Velocidade:</span>
+                    <input type="range" id="speedRange" min="10" max="1000" value="100" style="flex:1">
+                    <span id="speedVal">100ms</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- LÓGICA JAVASCRIPT EXTERNA (módulos ES) -->
+<script type="module" src="app.js"></script>
+</body>
+</html>
